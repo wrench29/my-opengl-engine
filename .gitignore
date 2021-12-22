@@ -1,0 +1,4 @@
+.vscode/
+build/*
+opengl_engine.vcxproj.filters
+opengl_engine.vcxproj.user
