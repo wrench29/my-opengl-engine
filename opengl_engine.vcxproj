@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\cube.cpp" />
     <ClCompile Include="src\camera.cpp" />
     <ClCompile Include="src\glad.c" />
     <ClCompile Include="src\main.cpp" />
@@ -156,6 +157,8 @@
     <ClCompile Include="src\shader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\cube.hpp" />
+    <ClInclude Include="src\object.hpp" />
     <ClInclude Include="src\camera.hpp" />
     <ClInclude Include="src\scene.hpp" />
     <ClInclude Include="src\shader.hpp" />

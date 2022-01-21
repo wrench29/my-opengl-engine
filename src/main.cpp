@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include <glad/glad.h>
 
@@ -6,7 +7,7 @@
 
 int main()
 {
-    Scene* scene = Scene::get_instance();
+    std::shared_ptr<Scene> scene = Scene::get_instance();
 
     scene->init();
     scene->loop();

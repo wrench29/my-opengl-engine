@@ -1,3 +1,5 @@
+#include <memory>
+
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
@@ -5,22 +7,22 @@
 #include "scene.hpp"
 #include "camera.hpp"
 
-FirstPersonCamera* FirstPersonCamera::first_person_camera = nullptr;
+std::shared_ptr<FirstPersonCamera> FirstPersonCamera::first_person_camera = nullptr;
 
 float g_sensetivity = 0.0f;
 
-FirstPersonCamera* FirstPersonCamera::get_instance()
+std::shared_ptr<FirstPersonCamera> FirstPersonCamera::get_instance()
 {
     if (FirstPersonCamera::first_person_camera == nullptr)
     {
-        FirstPersonCamera::first_person_camera = new FirstPersonCamera(Scene::scene->glfw_window);
+        FirstPersonCamera::first_person_camera = std::shared_ptr<FirstPersonCamera>(new FirstPersonCamera(Scene::get_instance()->glfw_window));
     }
     return FirstPersonCamera::first_person_camera;
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    FirstPersonCamera* fpc = FirstPersonCamera::first_person_camera;
+    std::shared_ptr<FirstPersonCamera> fpc = FirstPersonCamera::first_person_camera;
 
     float xoffset = xpos - fpc->lastX;
     float yoffset = fpc->lastY - ypos; 

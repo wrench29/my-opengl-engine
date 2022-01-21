@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -8,14 +9,15 @@
 #include "utils.hpp"
 #include "scene.hpp"
 #include "camera.hpp"
+#include "cube.hpp"
 
-Scene* Scene::scene = nullptr;
+std::shared_ptr<Scene> Scene::scene = nullptr;
 
-Scene* Scene::get_instance()
+std::shared_ptr<Scene> Scene::get_instance()
 {
     if (scene == nullptr)
     {
-        scene = new Scene();
+        scene = std::shared_ptr<Scene>(new Scene());
     }
     return scene;
 }
@@ -42,7 +44,7 @@ void Scene::process_input()
 ////
 void Scene::framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-    Scene* scene = Scene::scene;
+    std::shared_ptr<Scene> scene = Scene::get_instance();
     scene->window_width = width;
     scene->window_height = height;
     scene->projection_matrix = glm::perspective(
@@ -98,62 +100,7 @@ void Scene::loop()
     // Depth buffer
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-
-    Shader shader;
-    shader.load_source_file(GL_VERTEX_SHADER, "shaders/vertex_shader.glsl");
-    shader.load_source_file(GL_FRAGMENT_SHADER, "shaders/fragment_shader.glsl");
-    shader.create_program();
-
-    float verticies[] = 
-    {
-        -1.0f, -1.0f, -1.0f, // 1
-        -1.0f, -1.0f, 1.0f,  // 2
-        1.0f, -1.0f, 1.0f,   // 3
-        1.0f, -1.0f, -1.0f,  // 4
-        -1.0f, 1.0f, -1.0f,  // 5
-        -1.0f, 1.0f, 1.0f,   // 6
-        1.0f, 1.0f, 1.0f,    // 7
-        1.0f, 1.0f, -1.0f    // 8
-    };
-    int indices[] =
-    {
-        0, 4, 7,
-        0, 3, 7,
-
-        1, 0, 4,
-        1, 5, 4,
-
-        1, 5, 6,
-        1, 2, 6,
-
-        3, 7, 6,
-        3, 2, 6,
-
-        0, 1, 2,
-        0, 2, 3,
-
-        4, 5, 6,
-        4, 6, 7
-    };
-
-    unsigned int VBO, VAO, EBO;
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
     
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);    
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW); 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);
-    
-    glVertexAttribPointer(shader.get_attrib_location("aPos"), 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-    glEnableVertexAttribArray(0);
-
-    GLuint h_mvp = shader.get_uniform_location("MVP");
-
     this->fps_camera = FirstPersonCamera::get_instance();
 
     // Matrices
@@ -166,10 +113,7 @@ void Scene::loop()
         100.0f
     );
 
-    // Model
-    glm::mat4 model_matrix = glm::mat4(1.0f);
-
-    glm::mat4 MVP;
+    Cube cube;
 
     float current_frame = 0.0f, previous_frame = 0.0f;
 
@@ -186,15 +130,7 @@ void Scene::loop()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        shader.use();
-        model_matrix = glm::rotate(model_matrix, this->frame_delta * glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 1.0f));
-        MVP = projection_matrix * this->fps_camera->get_view_matrix() * model_matrix;
-        glUniformMatrix4fv(h_mvp, 1, GL_FALSE, &MVP[0][0]);
-
-        glBindVertexArray(VAO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-        
-        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+        cube.draw();
 
         glfwSwapBuffers(this->glfw_window);
         // End of render process

@@ -3,6 +3,9 @@
 #include <sstream>
 #include <iostream>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "shader.hpp"
 
 void Shader::update_status()
@@ -39,7 +42,7 @@ void Shader::update_status()
     }
 }
 
-bool Shader::load_source(unsigned int type, std::string source)
+bool Shader::load_source(unsigned int type, const std::string source)
 {
     if (type == GL_VERTEX_SHADER || type == GL_GEOMETRY_SHADER || type == GL_FRAGMENT_SHADER)
     {
@@ -76,7 +79,7 @@ bool Shader::load_source(unsigned int type, std::string source)
     }
     return false;
 }
-bool Shader::load_source_file(unsigned int type, std::string source)
+bool Shader::load_source_file(unsigned int type, const std::string source)
 {
     std::ifstream file(source);
     if (!file.is_open())
@@ -128,7 +131,7 @@ bool Shader::use()
     }
     return false;
 }
-int Shader::get_attrib_location(std::string name)
+int Shader::get_attrib_location(const std::string name)
 {
     if (!this->ready_to_use)
     {
@@ -136,11 +139,16 @@ int Shader::get_attrib_location(std::string name)
     }
     return glGetAttribLocation(this->shader_program, name.c_str());
 }
-int Shader::get_uniform_location(std::string name)
+int Shader::get_uniform_location(const std::string name)
 {
     if (!this->ready_to_use)
     {
         return -1;
     }
     return glGetUniformLocation(this->shader_program, name.c_str());
+}
+
+void Shader::set_mat4(const std::string name, const glm::mat4 matrix)
+{
+    glUniformMatrix4fv(this->get_uniform_location(name), 1, GL_FALSE, &matrix[0][0]);
 }

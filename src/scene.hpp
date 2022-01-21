@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
@@ -15,14 +17,14 @@ public:
     void init();
     void loop();
 
-    static Scene* get_instance();
+    static std::shared_ptr<Scene> get_instance();
 private:
     Scene(): 
         glfw_initialized(false), 
         glfw_window(nullptr),
         window_width(1280),
         window_height(720) {};
-    static Scene* scene;
+    static std::shared_ptr<Scene> scene;
 
     // Scene variables
     bool glfw_initialized;
@@ -31,7 +33,7 @@ private:
     glm::mat4 projection_matrix;
     glm::mat4 view_matrix;
     float frame_delta;
-    FirstPersonCamera* fps_camera;
+    std::shared_ptr<FirstPersonCamera> fps_camera;
 
     // Scene functions
     void on_error();
@@ -42,4 +44,5 @@ private:
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
     friend class FirstPersonCamera;
+    friend class Object;
 };

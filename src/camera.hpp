@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
@@ -9,7 +11,7 @@ public:
     FirstPersonCamera(FirstPersonCamera &other) = delete;
     void operator=(const FirstPersonCamera &) = delete;
 
-    static FirstPersonCamera* get_instance();
+    static std::shared_ptr<FirstPersonCamera> get_instance();
 
     glm::mat4 get_view_matrix();
     void set_sensetivity(float sensetivity);
@@ -17,7 +19,7 @@ public:
     void process_input();
 private:
     FirstPersonCamera(GLFWwindow* glfw_window);
-    static FirstPersonCamera* first_person_camera;
+    static std::shared_ptr<FirstPersonCamera> first_person_camera;
 
     GLFWwindow* glfw_window;
     float sensetivity;
