@@ -103,8 +103,6 @@ void Scene::loop()
     
     this->fps_camera = FirstPersonCamera::get_instance();
 
-    // Matrices
-
     // Perspective
     this->projection_matrix = glm::perspective(
         glm::radians(70.0f),
@@ -113,13 +111,13 @@ void Scene::loop()
         100.0f
     );
 
-    Cube cube;
+    Cube cube, cube2;
+    cube2.move(glm::vec3(5.0f, 0.0f, 0.0f));
 
     float current_frame = 0.0f, previous_frame = 0.0f;
-
     while (!glfwWindowShouldClose(this->glfw_window))
     {
-        current_frame = glfwGetTime();
+        current_frame = (float)glfwGetTime();
         this->frame_delta = current_frame - previous_frame;
         previous_frame = current_frame;
 
@@ -131,6 +129,7 @@ void Scene::loop()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         cube.draw();
+        cube2.draw();
 
         glfwSwapBuffers(this->glfw_window);
         // End of render process

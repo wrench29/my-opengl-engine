@@ -23,7 +23,10 @@ private:
         glfw_initialized(false), 
         glfw_window(nullptr),
         window_width(1280),
-        window_height(720) {};
+        window_height(720),
+        frame_delta(0.0f),
+        projection_matrix(0.0f),
+        view_matrix(0.0f) {};
     static std::shared_ptr<Scene> scene;
 
     // Scene variables

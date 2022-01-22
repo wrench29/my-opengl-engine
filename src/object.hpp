@@ -3,6 +3,7 @@
 #include <memory>
 
 #include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <glad/glad.h>
 
 #include "shader.hpp"
@@ -12,13 +13,17 @@ class Object
 {
 public:
 	virtual void draw() = 0;
+	void move(glm::vec3 move_vector)
+	{
+		this->model_matrix = glm::translate(this->model_matrix, move_vector);
+	}
 protected:
 	Object() : VAO(0), VBO(0), verticies(nullptr), verticies_length(0), model_matrix(1.0f) {};
 	void init(float* vert, unsigned int vert_len)
 	{
 		this->verticies_length = vert_len;
 		this->verticies = std::shared_ptr<float[]>(new float[vert_len]);
-		for (int i = 0; i < vert_len; i++)
+		for (unsigned int i = 0; i < vert_len; i++)
 		{
 			this->verticies[i] = vert[i];
 		}

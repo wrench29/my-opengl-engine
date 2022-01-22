@@ -24,10 +24,10 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     std::shared_ptr<FirstPersonCamera> fpc = FirstPersonCamera::first_person_camera;
 
-    float xoffset = xpos - fpc->lastX;
-    float yoffset = fpc->lastY - ypos; 
-    fpc->lastX = xpos;
-    fpc->lastY = ypos;
+    float xoffset = (float)xpos - fpc->lastX;
+    float yoffset = fpc->lastY - (float)ypos; 
+    fpc->lastX = (float)xpos;
+    fpc->lastY = (float)ypos;
 
     float sensitivity = 0.1f;
     xoffset *= sensitivity;
@@ -54,8 +54,8 @@ FirstPersonCamera::FirstPersonCamera(GLFWwindow* glfw_window) :
     glfw_window(glfw_window), 
     sensetivity(0.1f), 
     movement_speed(10.0f),
-    lastX(Scene::scene->window_width / 2),
-    lastY(Scene::scene->window_height / 2),
+    lastX((float)Scene::scene->window_width / 2),
+    lastY((float)Scene::scene->window_height / 2),
     pitch(0.0f),
     yaw(-90.0f)
 {
