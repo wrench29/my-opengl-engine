@@ -17,8 +17,12 @@ public:
 	{
 		this->model_matrix = glm::translate(this->model_matrix, move_vector);
 	}
+	void set_color(glm::vec3 color)
+	{
+		this->color = color;
+	}
 protected:
-	Object() : VAO(0), VBO(0), verticies(nullptr), verticies_length(0), model_matrix(1.0f) {};
+	Object() : VAO(0), VBO(0), verticies(nullptr), verticies_length(0), model_matrix(1.0f), color(1.0f, 1.0f, 1.0f) {};
 	void init(float* vert, unsigned int vert_len)
 	{
 		this->verticies_length = vert_len;
@@ -46,7 +50,8 @@ protected:
 	void low_draw()
 	{
 		shader.use();
-		
+
+		this->shader.set_vec3("color", this->color);
 		this->shader.set_mat4("model", this->model_matrix);
 		this->shader.set_mat4("view", Scene::scene->fps_camera->get_view_matrix());
 		this->shader.set_mat4("projection", Scene::scene->projection_matrix);
@@ -60,5 +65,6 @@ protected:
 	std::shared_ptr<float[]> verticies;
 	unsigned int verticies_length;
 	glm::mat4 model_matrix;
+	glm::vec3 color;
 	Shader shader;
 };

@@ -29,6 +29,7 @@ public:
     int get_attrib_location(const std::string name);
     int get_uniform_location(const std::string name);
     void set_mat4(const std::string name, const glm::mat4 matrix);
+    void set_vec3(const std::string name, const glm::vec3 vector);
 private:
     bool ready_to_link;
     bool ready_to_use;

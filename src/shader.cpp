@@ -152,3 +152,8 @@ void Shader::set_mat4(const std::string name, const glm::mat4 matrix)
 {
     glUniformMatrix4fv(this->get_uniform_location(name), 1, GL_FALSE, &matrix[0][0]);
 }
+
+void Shader::set_vec3(const std::string name, const glm::vec3 vector)
+{
+    glUniform3fv(this->get_uniform_location(name), 1, &vector[0]);
+}
