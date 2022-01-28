@@ -1,7 +1,7 @@
 #include <iostream>
 #include <memory>
 
-#include <glad/glad.h>
+#include <epoxy/gl.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -83,12 +83,6 @@ void Scene::init()
     }
 
     glfwMakeContextCurrent(this->glfw_window);
-
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
-        std::cerr << "failed to initialize opengl" << std::endl;
-        this->on_error();
-    }
 
     glfwSwapInterval(1);
 

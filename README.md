@@ -1,2 +1,2 @@
-# opengl-engine-windows
-My attempt to create own opengl engine on windows
+# opengl-engine
+My attempt to create own opengl engine
