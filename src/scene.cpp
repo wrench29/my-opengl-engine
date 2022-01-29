@@ -105,13 +105,10 @@ void Scene::loop()
         100.0f
     );
 
-    Cube cube, cube2, cube3, cube4, cube5, cube6;
-    cube2.move(glm::vec3(2.0f, 0.0f, 0.0f));
-    cube3.move(glm::vec3(-2.0f, 0.0f, 0.0f));
-    cube4.move(glm::vec3(0.0f, 2.0f, 0.0f));
-    cube5.move(glm::vec3(0.0f, 4.0f, 0.0f));
-    cube6.move(glm::vec3(0.0f, 6.0f, 0.0f));
-    cube6.set_color(glm::vec3(1.0f, 0.0f, 0.0f));
+    Cube cube, cube2, cube3, cube4;
+    cube2.move(glm::vec3(4.0f, 0.0f, 0.0f));
+    cube3.move(glm::vec3(8.0f, 0.0f, 0.0f));
+    cube4.move(glm::vec3(12.0f, 0.0f, 0.0f));
 
     float current_frame = 0.0f, previous_frame = 0.0f;
     while (!glfwWindowShouldClose(this->glfw_window))
@@ -131,8 +128,6 @@ void Scene::loop()
         cube2.draw();
         cube3.draw();
         cube4.draw();
-        cube5.draw();
-        cube6.draw();
 
         glfwSwapBuffers(this->glfw_window);
         // End of render process

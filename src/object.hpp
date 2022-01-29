@@ -15,14 +15,80 @@ public:
 	virtual void draw() = 0;
 	void move(glm::vec3 move_vector)
 	{
-		this->model_matrix = glm::translate(this->model_matrix, move_vector);
+		this->position += move_vector;
+		this->model_matrix = glm::translate(this->model_matrix, this->position);
+	}
+	void set_position(glm::vec3 position_vector)
+	{
+		this->model_matrix = glm::translate(this->model_matrix,
+				(-1.0f * this->position) + position_vector);
+		this->position = position_vector;
+	}
+	void rotate(glm::vec3 rotate_vector)
+	{
+		this->rotation += rotate_vector;
+		if (rotate_vector.x != 0.0f)
+		{
+			this->model_matrix = glm::rotate(
+				this->model_matrix, glm::radians(this->rotation.x),
+				glm::vec3(1.0f, 0.0f, 0.0f)
+			);
+		}
+		if (rotate_vector.y != 0.0f)
+		{
+			this->model_matrix = glm::rotate(
+				this->model_matrix, glm::radians(this->rotation.y),
+				glm::vec3(0.0f, 1.0f, 0.0f)
+			);
+		}
+		if (rotate_vector.z != 0.0f)
+		{
+			this->model_matrix = glm::rotate(
+				this->model_matrix, glm::radians(this->rotation.z),
+				glm::vec3(0.0f, 0.0f, 1.0f)
+			);
+		}
+	}
+	void set_rotation(glm::vec3 rotation_vector)
+	{
+		this->model_matrix = glm::rotate(
+					this->model_matrix,
+					glm::radians((-1.0f * this->rotation.z) + rotation_vector.z),
+					glm::vec3(0.0f, 0.0f, 1.0f)
+				);
+		this->model_matrix = glm::rotate(
+					this->model_matrix,
+					glm::radians((-1.0f * this->rotation.y) + rotation_vector.y),
+					glm::vec3(0.0f, 1.0f, 0.0f)
+				);
+		this->model_matrix = glm::rotate(
+				this->model_matrix,
+				glm::radians((-1.0f * this->rotation.x) + rotation_vector.x),
+				glm::vec3(1.0f, 0.0f, 0.0f)
+			);
+
+		this->rotation = rotation_vector;
+	}
+	void scale(glm::vec3 scale_vector)
+	{
+		this->model_matrix = glm::scale(this->model_matrix, scale_vector);
+		this->scaling *= scale_vector;
+	}
+	void set_scaling(glm::vec3 scaling_vector)
+	{
+		this->model_matrix = glm::scale(this->model_matrix, 1.0f / this->scaling);
+		this->model_matrix = glm::scale(this->model_matrix, scaling_vector);
+		this->scaling = scaling_vector;
 	}
 	void set_color(glm::vec3 color)
 	{
 		this->color = color;
 	}
 protected:
-	Object() : VAO(0), VBO(0), verticies(nullptr), verticies_length(0), model_matrix(1.0f), color(1.0f, 1.0f, 1.0f) {};
+	Object() : VAO(0), VBO(0), verticies(nullptr), 
+			verticies_length(0), model_matrix(1.0f), 
+			color(1.0f, 1.0f, 1.0f), position(0.0f), 
+			rotation(0.0f), scaling(1.0f) {};
 	void init(float* vert, unsigned int vert_len)
 	{
 		this->verticies_length = vert_len;
@@ -67,4 +133,5 @@ protected:
 	glm::mat4 model_matrix;
 	glm::vec3 color;
 	Shader shader;
+	glm::vec3 position, rotation, scaling;
 };
