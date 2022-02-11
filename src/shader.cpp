@@ -7,6 +7,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "shader.hpp"
+#include "utils.hpp"
 
 void Shader::update_status()
 {
@@ -81,7 +82,10 @@ bool Shader::load_source(unsigned int type, const std::string source)
 }
 bool Shader::load_source_file(unsigned int type, const std::string source)
 {
-    std::ifstream file(source);
+    std::string full_path = assets_dir();
+    full_path.append("shaders/");
+    full_path.append(source);
+    std::ifstream file(full_path);
     if (!file.is_open())
     {
         return false;

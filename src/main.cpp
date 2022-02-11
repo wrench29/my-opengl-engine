@@ -1,7 +1,7 @@
 #include <iostream>
 #include <memory>
 
-#include <glad/glad.h>
+#include <epoxy/gl.h>
 
 #include "scene.hpp"
 
