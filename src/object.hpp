@@ -98,8 +98,8 @@ protected:
 			this->verticies[i] = vert[i];
 		}
 
-		this->shader.load_source_file(GL_VERTEX_SHADER, "../shaders/vertex_shader.glsl");
-		this->shader.load_source_file(GL_FRAGMENT_SHADER, "../shaders/fragment_shader.glsl");
+		this->shader.load_source_file(GL_VERTEX_SHADER, "vertex_shader.glsl");
+		this->shader.load_source_file(GL_FRAGMENT_SHADER, "fragment_shader.glsl");
 		this->shader.create_program();
 
 		glGenVertexArrays(1, &this->VAO);

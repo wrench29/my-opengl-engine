@@ -8,7 +8,7 @@ file(GLOB SOURCES src/*.cpp)
 
 add_executable(opengl-engine ${SOURCES})
 
-target_link_libraries(opengl-engine glfw epoxy)
+target_link_libraries(opengl-engine glfw epoxy boost_system)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
